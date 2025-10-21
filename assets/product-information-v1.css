@@ -1,0 +1,401 @@
+/* comment */
+
+product-information {
+  .pinfo-wrapper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  @media (max-width: 768px) {
+    .pinfo-wrapper {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 20px;
+    }
+    product-info-media {
+      grid-row: 1/2;
+    }
+  }
+  .pinfo-top-block{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--Spacing-Container-xs, 12px);
+    align-self: stretch;    
+  }
+
+  product-info-content1 {
+    align-self: center;
+  }
+  product-info-content2 {
+    align-self: center;
+  }
+
+  .swiper {
+    --swiper-pagination-bullet-width: 3px;
+    --swiper-pagination-bullet-height: 20px;
+    --swiper-pagination-bullet-border-radius: 0px;
+    --swiper-pagination-bullet-inactive-color: #9c9c9c;
+    --swiper-pagination-bullet-inactive-opacity: 1;
+
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+
+    @media(max-width: 768px) {
+      --swiper-pagination-bullet-width: 8px;
+      --swiper-pagination-bullet-height: 8px;
+      aspect-ratio: unset;
+
+      .swiper-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  /* .swiper-pagination-bullet {
+    transition: height 0.7s;
+  }
+  .swiper-pagination-bullet-active {
+    transition: height 0.7s;
+    --swiper-pagination-bullet-height: 50px;
+    --swiper-pagination-color: #ffffff;
+  } */
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 3/4;
+  }
+
+  .pinfo-1-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: var(--Spacing-Container-md, 24px);
+    align-self: stretch;
+    align-items: stretch;
+  }
+
+  .pinfo-title {
+    color: #000;
+    font-family: var(--font-family-Title, "Aktiv Grotesk");
+    font-size: var(--Font-Size-Heading-H2, 24px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H2, 24px); /* 100% */
+    letter-spacing: -0.72px;
+    margin: 0;
+  }
+  .pinfo-price {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--Spacing-Container-xs, 12px);
+  }
+  .pinfo-rgular-price {
+    color: var(--Primary, #000);
+    font-family: var(--font-family-Title, "Aktiv Grotesk");
+    font-size: var(--Font-Size-Heading-H3, 20px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H3, 20px); /* 100% */
+    letter-spacing: -0.4px;
+    margin: 0;
+  }
+  .pinfo-compare-price {
+    color: #000;
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: var(--Font-Size-Paragraph-Regular, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */
+    text-decoration-line: strikethrough;
+    margin: 0;
+  }
+
+  pinfo-variant-picker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--Spacing-Container-md, 24px);
+  }
+  .pinfo-variants-options.others-variant {
+    display: flex;
+    flex-direction: column;
+    gap: var(--Spacing-Container-xxs, 8px);
+  }
+  .pinfo-variants-options.color-variant {
+    display: flex;
+    flex-direction: column;
+    gap: var(--Spacing-Container-xxs, 8px);
+  }
+
+  .pinfo-option-label-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .pinfo-filter-label {
+    color: var(--Content-Base-main, #1f2937);
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: var(--Font-Size-Paragraph-Small, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Small, 20px);
+    margin: 0;
+  }
+  .pinfo-options-values-wrapper.color-options {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+
+    @media(max-width: 768px) {
+      gap: 8px;
+    }
+
+    label {
+      display: flex;
+      position: relative;
+      cursor: pointer;
+    }
+
+    label.disabled {
+      opacity: 0.7;
+    }
+
+    label img {
+      width: 30px;
+      height: 11px;
+      object-fit: cover;
+      box-sizing: border-box;
+      border: .5px solid #b3abab57;
+
+      @media(max-width: 768px) {
+        width: 40px;
+        height: 15px;
+      }
+    }
+
+    input:checked + label:after {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 1px;
+      background: #000000;
+      bottom: -4px;
+      left: 0;
+    }
+  }
+
+  .pinfo-options-values-wrapper.others-options {
+    display: flex;
+    align-items: center;
+    gap: var(--Spacing-Container-sm, 16px);
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+
+    label {
+      display: flex;
+      position: relative;
+      cursor: pointer;
+      color: #000;
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      /* font-size: var(--Font-Size-Paragraph-Tiny, 12px); */
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1;
+      display: block;
+      padding: 0;
+      margin: 0;
+    }
+
+    label.disabled {
+      opacity: 0.7;
+    }
+
+    input:checked + label:after {
+      position: absolute;
+      content: "";
+      width: 100%;
+      height: 1px;
+      background: #000000;
+      bottom: -4px;
+      left: 0;
+    }
+  }
+
+  .pinfo-size-guide {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .pinfo-size-guide span{
+    color: var(--Content-Base-main, #1F2937);
+    text-align: right;
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: var(--Font-Size-Paragraph-Small, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Small, 20px); /* 142.857% */
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
+  }
+
+  .pinfo-add-to-cart {
+    display: flex;
+    padding: var(--Spacing-Container-xs, 12px) var(--Spacing-Container-lg, 40px);
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    border-radius: var(--rounded-none, 0px);
+    background: #906f53;
+    border: none;
+    color: #fff;
+    text-align: center;
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: var(--Font-Size-UI-Controls-Control-Button-Small, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-UI-Controls-Control-Button-Small, 16px);
+
+    @media(max-width: 768px) {
+      padding: var(--Spacing-Container-md, 14px) var(--Spacing-Container-lg, 40px);
+      text-transform: uppercase;
+    }
+  }
+
+  .acr-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+    cursor: pointer;
+  }
+  .acr-title *{
+    color: var(--Content-Base-main, #1F2937);
+    font-family: var(--font-family-Title, "Aktiv Grotesk");
+    font-size: var(--Font-Size-Heading-H4, 16px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H4, 16px); /* 100% */
+    letter-spacing: -0.32px;
+    margin: 0;
+  }
+  .acr-content *{
+    color: #000;
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: var(--Font-Size-Paragraph-Small, 14px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Small, 20px); /* 142.857% */    
+    margin: 0;
+  }
+  .__tab-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    svg {
+      position: absolute;
+      transform-origin: center;
+      transition: 0.3s;
+    }
+    .plus-icon {
+      visibility: visible;
+      transform: rotate(0deg);
+    }
+    .minus-icon {
+      visibility: hidden;
+      transform: rotate(180deg);
+    }
+  }
+
+  .accordion {
+    display: flex;
+    padding: var(--Spacing-Container-sm, 16px) var(--Spacing-Container-0, 0px);
+    flex-direction: column;
+    align-items: flex-start;
+    /* gap: var(--Spacing-Container-sm, 16px); */
+    align-self: stretch;    
+    border-bottom: 1px solid var(--Border-Base-main, #D1D5DB);
+    svg{
+      width: 16px;
+      height: 16px;
+    }
+  }
+  .accordion.active {
+    gap: var(--Spacing-Container-sm, 16px);
+    .plus-icon {
+      visibility: hidden;
+      transform: rotate(180deg);
+    }
+    .minus-icon {
+      visibility: visible;
+      transform: rotate(0deg);
+    }
+  }
+  .p-info-btn-buy-now{
+    margin: 0;
+    color: #000;
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: var(--Font-Size-Paragraph-Tiny, 12px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Paragraph-Tiny, 16px);  
+    margin-top:  var(--Spacing-Container-xxs, 8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    @media(max-width: 1420px){
+      font-size: 10px;
+      svg{
+        max-width: 60px;
+        height: auto;
+      }
+    }
+  }
+
+
+
+  .swiper-pagination-bullet {
+    transition: all 0.6s ease;
+    display: block !important;
+    transform: scale(1) !important;
+  }
+  .swiper-pagination-bullet-active {
+    transition: all 0.6s ease;
+    --swiper-pagination-bullet-height: 40px;
+    --swiper-pagination-color: #ffffff;
+
+    @media(max-width: 768px) {
+      --swiper-pagination-bullet-height: 8px;
+    }
+  }
+  /* .swiper-pagination{
+    height: 260px !important;
+  } */
+}

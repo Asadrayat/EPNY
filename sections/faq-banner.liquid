@@ -1,0 +1,230 @@
+{{ 'faq-banner.css' | asset_url | stylesheet_tag }}
+
+{% assign id = section.id %}
+<style>
+    #shopify-section-{{ id }} {
+     padding-top: {{ section.settings.padding_top }}px;
+     padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  @media screen and (max-width: 890px){
+     #shopify-section-{{ id }} {
+       padding-top: {{ section.settings.padding_top-m }}px;
+       padding-bottom: {{ section.settings.padding_bottom-m }}px;
+    }
+  }
+  .matched-faqs.faq-with-tab{
+    
+    .faq_title{
+      color: var(--Content-Base-main, #1F2937);
+      font-family: var(--font-family-Title, "Aktiv Grotesk");
+      font-size: var(--Font-Size-Heading-H3, 20px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Heading-H3, 20px); /* 100% */
+      letter-spacing: -0.4px;
+      margin: 16px 0;
+    }
+    .heading svg{
+      display: none;
+    }
+    .faq{
+      display: block!important;
+      max-width: 1200px;
+      margin: 0 auto;
+      border-bottom: 1px solid #00000025;
+      @media screen and (max-width: 1600px){
+        max-width: 1000px;
+      }
+      @media screen and (max-width: 768px){
+        max-width: 90%;
+      }
+    }
+     .faq_content {
+        height: unset;
+    }
+  }
+</style>
+<section class="{% unless section.settings.full_width %}container{% endunless %} --sec--{{ section.id }}">
+  <div class="faq_banner-container color-{{ section.settings.color_scheme }}">
+    <div class="heading-{{ id }} heading">
+      <h2>{{ section.settings.title }}</h2>
+      <p class="rte">{{ section.settings.desc }}</p>
+      <div class="row  button__actions">
+        <input type="text" id="searchFaq" placeholder="Search">
+      </div>
+    </div>
+    {% if section.settings.image %}
+      <span class="image-wrap">
+        {{
+          section.settings.image
+          | image_url: width: section.settings.image.width
+          | image_tag: class: 'small-hide medium-hide'
+        }}
+      </span>
+    {% else %}
+      <span class="image-wrap">
+        {{ 'image' | placeholder_svg_tag: 'placeholder-svg', class: 'small-hide medium-hide' }}
+      </span>
+    {% endif %}
+    {% if section.settings.image_m %}
+      <span class="image-wrap">
+        {{
+          section.settings.image_m
+          | image_url: width: section.settings.image_m.width
+          | image_tag: class: 'large-up-hide'
+        }}
+      </span>
+    {% else %}
+      <span class="image-wrap">
+        {{
+          section.settings.image
+          | image_url: width: section.settings.image.width
+          | image_tag: class: 'large-up-hide'
+        }}
+      </span>
+    {% endif %}
+  </div>
+  <div class="matched-faqs faq-with-tab"></div>
+</section>
+
+<script>
+document.getElementById("searchFaq").addEventListener("input", function () {
+  const searchValue = this.value.toLowerCase().trim(); 
+  const faqs = document.querySelectorAll(".faq_container .faq");
+  const matchedContainer = document.querySelector(".matched-faqs");
+  matchedContainer.innerHTML = ""; 
+
+  if (searchValue === "") {
+    return;
+  }
+
+  faqs.forEach(faq => {
+    const title = faq.querySelector(".faq_title, .faq_content p").innerText.toLowerCase(); 
+    // const content = faq.querySelector(".faq_content p").innerText.toLowerCase(); 
+    // const contentli = faq.querySelector(".faq_content li").innerText.toLowerCase(); 
+
+    const text = Array.from(faq.querySelectorAll(".faq_title, p, li, h1, h2,h3,h4, a,span,strong"))
+  .map(el => el.innerText.toLowerCase())
+  .join(" ");
+
+    
+    console.log(text)
+    // console.log(content)
+
+    // if (title.includes(searchValue) || content.includes(searchValue)) {
+    //   matchedContainer.appendChild(faq.cloneNode(true)); 
+    // }
+    
+    if (text.includes(searchValue)) {
+      matchedContainer.appendChild(faq.cloneNode(true)); 
+    }
+    
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Faq Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_m",
+      "label": "Image Mobile"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Take Control of Your Health Today"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "desc",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary",
+      "label": "Primary"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Spacing (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "padding_top-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top  (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom  (Mobile)",
+      "default": 0
+    }
+  ],
+  "presets":[
+    {
+      "name": "Faq Banner"
+    }
+  ]
+}
+{% endschema %}

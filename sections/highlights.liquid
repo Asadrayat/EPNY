@@ -1,0 +1,330 @@
+{% liquid
+  assign id = section.id
+%}
+
+<style>
+    #shopify-section-{{id}} {
+      box-sizing: border-box;
+      margin-top: {{section.settings.margin_top | append: 'px'}};
+      margin-bottom: {{section.settings.margin_bottom | append: 'px'}};
+      padding-top: {{section.settings.padding_top | append: 'px'}};
+      padding-bottom: {{section.settings.padding_bottom | append: 'px'}};
+    }
+
+    @media(max-width: 768px) {
+      #shopify-section-{{id}} {
+        margin-top: {{section.settings.margin_top_m | append: 'px'}};
+        margin-bottom: {{section.settings.margin_bottom_m | append: 'px'}};
+        padding-top: {{section.settings.padding_top_m | append: 'px'}};
+        padding-bottom: {{section.settings.padding_bottom_m | append: 'px'}};
+      }
+    }
+    .sec-{{ id }}{
+      .heading-{{ id }}{
+        margin: 0 0 24px;
+        text-align: center;
+        h4{
+          color: var(--Content-Base-main);
+          font-family: var(--font-family-Title);
+          font-size: var(--Font-Size-Heading-H1);
+          line-height: var(--Line-Height-Heading-H1); /* 100% */
+          letter-spacing: -0.96px;
+          margin: 0 0 8px;
+        }
+        p{
+          color: var(--Content-Base-base);
+          font-family: var(--font-family-Body);
+          font-size: var(--Font-Size-Paragraph-Small);
+          line-height: var(--Line-Height-Paragraph-Small); /* 142.857% */
+          margin: 0;
+        }
+      }
+      .items-{{ id }}{
+        position: relative;
+        .swiper:not(.swiper-initialized) .swiper-slide {
+          max-width: calc(var(--page-width)/4) !important;
+          margin-right: 16px;
+          overflow: hidden;
+        }
+        .swiper-slide{
+          p{
+            color: var(--Content-Base-main);
+            font-family: var(--font-family-Body);
+            font-size: var(--Font-Size-Paragraph-Small);
+            line-height: var(--Line-Height-Paragraph-Small); /* 142.857% */
+            margin: 8px 0 0;
+          }
+          a{
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
+      .item-image-{{ id }} img{
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        aspect-ratio: 273.60/342.00;
+
+        @media(max-width: 768px) {
+          max-width: 150px;
+        }
+      }
+
+
+      .--nav-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        background: #fff;
+        line-height: 1;
+        position: absolute;
+        top: 50%;
+        z-index: 1;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        transform: translateY(-50%);
+        box-shadow: 0px 1px 2px -1px rgba(0, 0, 0, 0.10), 0px 1px 3px 0px rgba(0, 0, 0, 0.10);
+        cursor: pointer;
+        visibility: hidden;
+      }
+      .--nav-icon.swiper-button-disabled {
+        display: none;
+      }
+      .prev-{{ section.id }}.--nav-icon {
+        left: 0px;
+      }
+      .next-{{ section.id }}.--nav-icon {
+        right: 0px;
+      }
+      .swiper-pagination-progressbar {
+        bottom: -14px;
+        top: unset;
+      }
+      .swiper-pagination-progressbar-fill {
+        background: #906f53;
+      }
+      .swiper-pagination{
+        z-index: 1;
+      }
+  }
+</style>
+
+<div class="sec-{{ id }}">
+  <div class="{% unless section.settings.full_width %}page-width{% endunless %}">
+    <div class="wrapper-{{ id }}">
+      <div class="heading-{{ id }}">
+        <h4>
+          {% if section.settings.title != blank %}
+            {{ section.settings.title }}
+          {% else %}
+            {{ collection.title }}
+          {% endif %}
+        </h4>
+        {% if section.settings.text != blank %}
+          <p>{{ section.settings.text }}</p>
+        {% else %}
+          <p>{{ collection.description }}</p>
+        {% endif %}
+      </div>
+      {% if section.blocks.size > 0 %}
+        <div class="items-{{ id }}">
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              {% for block in section.blocks %}
+                <div class="swiper-slide">
+                  <div class="item-image-{{ id }}">
+                    {% if block.settings.collection.image %}
+                      {{
+                        block.settings.collection.image
+                        | image_url: width: block.settings.collection.image.width
+                        | image_tag
+                      }}
+                    {% elsif block.settings.image %}
+                      {{ block.settings.image | image_url: width: block.settings.image.width | image_tag }}
+                    {% endif %}
+                  </div>
+                  <p>{{ block.settings.collection.title }}</p>
+                  <a href="{{ block.settings.collection.url }}"></a>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="prev-{{ section.id }} --nav-icon">
+            {% render 'all-icons', name: 'left_arrow' %}
+          </div>
+          <div class="next-{{ section.id }} --nav-icon">
+            {% render 'all-icons', name: 'right_arrow' %}
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(e) {
+    var swiper = new Swiper(".items-{{ id }} .swiper", {
+        slidesPerView: 3,
+        spaceBetween: 6,
+        navigation: {
+          nextEl: '.next-{{ section.id }}',
+          prevEl: '.prev-{{ section.id }}'
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          type: "progressbar",
+        },
+        breakpoints: {
+          750: {
+            slidesPerView: 5,
+            spaceBetween: 16
+          }
+        }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collection Highlights",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width Section",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Pattern Play Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "Explore our elegant and performance-driven women's golf apparel for Valentine's Day."
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Desktop"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing Mobile"
+    },
+    {
+      "type": "range",
+      "id": "margin_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_top_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_m",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Highlights"
+    }
+  ]
+}
+{% endschema %}

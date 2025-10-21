@@ -1,0 +1,194 @@
+{% liquid
+  assign id = section.id
+  assign select_variant_image_id = product.selected_or_first_available_variant.featured_media.id
+%}
+
+
+<div class="page-width">
+  <div id="product-information-container" data-id="{{ section.id }}">
+    {{ 'product-information-v1.css' | asset_url | stylesheet_tag }}
+    <product-information data-update-url="true" data-selected-image-id="{{ select_variant_image_id }}">
+      <div class="pinfo-wrapper">
+        <product-info-content1>
+          <div class="pinfo-1-wrapper">
+            <div class="pinfo-top-block">
+              {% for block in section.blocks %}
+                {% case block.type %}
+                  {% when '@app' %}
+                    <div class="pinfo-app-block">{% render block %}</div>
+                  {% when 'title' %}
+                    <h2 class="pinfo-title">{{ product.title }}</h2>
+                  {% when 'price' %}
+                    <div class="pinfo-price-wrapper">
+                      <div class="pinfo-price">
+                        {% if product.selected_or_first_available_variant.price
+                            < product.selected_or_first_available_variant.compare_at_price
+                        %}
+                          <h3 class="pinfo-rgular-price">
+                            {{ product.selected_or_first_available_variant.price | money }}
+                          </h3>
+                          <h4 class="pinfo-compare-price">
+                            <s>
+                              {{- product.selected_or_first_available_variant.compare_at_price | money -}}
+                            </s>
+                          </h4>
+                        {% else %}
+                          <h3 class="pinfo-rgular-price">
+                            {{ product.selected_or_first_available_variant.price | money }}
+                          </h3>
+                        {% endif %}
+                      </div>
+                    </div>
+                {% endcase %}
+              {% endfor %}
+            </div>
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'variant-picker' %}
+                  {% render 'pinfo-variant-picker-v1', product: product, block: block %}
+                {% when 'buy-button' %}
+                  {% render 'pinfo-buy-button-v1', product: product, block: block %}
+              {% endcase %}
+            {% endfor %}
+          </div>
+        </product-info-content1>
+        <product-info-media>
+          <div class="swiper pinfo-thumb-swiper">
+            <div class="swiper-wrapper">
+              {% for media in product.media %}
+                <div class="swiper-slide" data-image-id="{{ media.id }}">
+                  {% unless media == blank %}
+                    <picture class="pinfo-thumb-pic">
+                      <source media="(max-width: 600px)" srcset="{{ media | image_url: width: 500 }}">
+                      <source media="(max-width: 1024px)" srcset="{{ media | image_url: width: 1024 }}">
+                      {% if forloop.first %}
+                        {{ media | image_url: width: media.width | image_tag }}
+                      {% else %}
+                        {{ media | image_url: width: media.width | image_tag: loading: 'lazy' }}
+                      {% endif %}
+                    </picture>
+                  {% endunless %}
+                </div>
+              {% endfor %}
+            </div>
+            <div class="swiper-pagination"></div>
+          </div>
+        </product-info-media>
+        <product-info-content2>
+          <accordion-element>
+            <div class="accordion-wrapper accordion-wrapper-{{ section.id }}">
+              {% for block in section.blocks %}
+                {% case block.type %}
+                  {% when 'collapsible' %}
+                    <div class="accordion">
+                      <div class="acr-title">
+                        <h4 class="--tab-title">{{ block.settings.title }}</h4>
+                        <div class="__tab-icons">
+                          {% render 'tab-icons', name: 'plus', class: 'plus-icon' %}
+                          {% render 'tab-icons', name: 'minus', class: 'minus-icon' %}
+                        </div>
+                      </div>
+                      <div class="acr-content">
+                        {{ block.settings.content }}
+                      </div>
+                    </div>
+                {% endcase %}
+              {% endfor %}
+            </div>
+          </accordion-element>
+        </product-info-content2>
+      </div>
+    </product-information>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", e => {
+   //  new Swiper(".pinfo-thumb-swiper", {
+   //   direction: "vertical",
+   //   slidesPerView: 1,
+   //   spaceBetween: 0,
+   //   mousewheel: true,
+   //   effect: 'card',
+   //   pagination: {
+   //     el: ".swiper-pagination",
+   //     clickable: true,
+   //   },
+   // });
+
+    new Accordion('.accordion-wrapper-{{ section.id }}', {
+        closeAll: true,
+        initOpenIndex: 1,
+        duration: 700,
+        activeClass: 'active'
+    })
+  })
+</script>
+
+{% schema %}
+{
+  "name": "Product Information",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "variant-picker",
+      "name": "Variant Picker",
+      "limit": 1
+    },
+    {
+      "type": "buy-button",
+      "name": "Buy Button",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "dynamic_checkout_button",
+          "label": "Dynamic Checkout Button",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "dynamic_checkout_button_text",
+          "label": "Dynamic Checkout Button Text"
+        }
+      ]
+    },
+    {
+      "type": "collapsible",
+      "name": "Collapsible Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Lorem Insum Dollar."
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Page Content",
+          "info": "Select Page"
+        }
+      ]
+    },
+
+  ]
+}
+{% endschema %}

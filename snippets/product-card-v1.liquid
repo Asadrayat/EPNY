@@ -1,0 +1,50 @@
+<product-card>
+  <div class="product-card {% if product.media[1] != null %}is--hoverable{% endif %}">
+    <div class="product-card-wrapper">
+      <div class="card-media">
+        {% if product.featured_image %}
+          {{
+            product.featured_image
+            | image_url: width: product.featured_image.width
+            | image_tag: class: 'primary_image', loading: 'lazy'
+          }}
+        {% endif %}
+
+        {% if product.media[1] != null %}
+          {{
+            product.media[1]
+            | image_url: width: product.media[1].width
+            | image_tag: class: 'second_image', loading: 'lazy'
+          }}
+        {% endif %}
+        <div class="sale-badge">Best Seller</div>
+        <button
+          class="card-qatc-btn"
+          data-product-handle="{{ product.handle }}"
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+        >
+          Quick View
+        </button>
+      </div>
+      <div class="card-info">
+        <div class="card-wishlist">
+          <div
+            class="ruk_rating_snippet"
+            data-sku="{{ product.handle }};{{ product.variants | map: 'sku' | join: ';' }};{{ product.variants | map: 'id' | join: ';' }}"
+          ></div>
+        </div>
+        <h4>{{ product.title | escape }}</h4>
+        <div class="card-price care-new-price">
+          {% if product.selected_or_first_available_variant.price < product.selected_or_first_available_variant.compare_at_price %}
+            <p class="cnp-regular">{{ product.selected_or_first_available_variant.price | money }}</p>
+            <p class="cnp-compare"><s>{{ product.selected_or_first_available_variant.compare_at_price | money }}</s></p>
+          {% else %}
+            <p class="cnp-regular">{{ product.selected_or_first_available_variant.price | money }}</p>
+          {% endif %}
+        </div>
+        {% render 'color-swatch', product: product %}
+      </div>
+    </div>
+    <a href="{{ product.url }}"></a>
+  </div>
+</product-card>

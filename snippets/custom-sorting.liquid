@@ -1,0 +1,81 @@
+<div class="custom__sort">
+  <div class="custom__sort-wrapper">
+    <button sort-opener>
+      Sort by
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M12.6667 6L8.00004 10.6667L3.33337 6" stroke="#D1D5DB" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <div sort-body class="custom__sort-options">
+      <div class="sort__options-wrapper">
+        <div class="sort__option-header hidden">
+          <h4>Sort By</h4>
+          <button sort-close>{% render 'all-icons', name: 'close' %}</button>
+        </div>
+        <div class="sort__options-inner">
+          <facet-filters-form class="facets facets-vertical-sort  small-hide--">
+            <form class="facets-vertical-form" id="FacetSortForm">
+              <div class="facet-filters sorting caption">
+                <div class="facet-filters__field">
+                  <div class="facet-filters__radio-container">
+                    {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                    {%- for option in collection.sort_options -%}
+                      <div class="facet-filters__radio-option">
+                        <input
+                          type="radio"
+                          name="sort_by"
+                          id="SortBy-{{ option.value | escape }}"
+                          value="{{ option.value | escape }}"
+                          class="facet-filters__sort caption-large"
+                          {% if option.value == sort_by %}
+                            checked="checked"
+                          {% endif %}
+                          aria-describedby="a11y-refresh-page-message"
+                        >
+                        <label for="SortBy-{{ option.value | escape }}">
+                          <span class="active__sort">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="12"
+                              height="12"
+                              viewBox="0 0 12 12"
+                              fill="none"
+                            >
+                              <path d="M10 3L4.5 8.5L2 6" stroke="white" stroke-width="1.6666" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
+                          {{ option.name | escape }}
+                        </label>
+                      </div>
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+
+              <div class="product-count-vertical light hidden" role="status">
+                <h2 class="product-count__text text-body">
+                  <span id="ProductCountDesktop">
+                    {%- if collection.results_count -%}
+                      {{
+                        'templates.search.results_with_count'
+                        | t: terms: collection.terms, count: collection.results_count
+                      }}
+                    {%- elsif collection.products_count == collection.all_products_count -%}
+                      {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+                    {%- else -%}
+                      {{
+                        'products.facets.product_count'
+                        | t: product_count: collection.products_count, count: collection.all_products_count
+                      }}
+                    {%- endif -%}
+                  </span>
+                </h2>
+                {%- render 'loading-spinner' -%}
+              </div>
+            </form>
+          </facet-filters-form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

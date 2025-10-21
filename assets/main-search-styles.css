@@ -1,0 +1,26 @@
+.header__search .search-modal.modal__content {
+  /* min-height: 60px;
+  height: 60px;
+  top: 100%; */
+}
+.predictive-search {
+  /* max-height: 70vh; */
+  z-index: 11;
+  @media screen and (max-width: 1249px) {
+    /* max-height: 90vh; */
+  }
+}
+.template-search {
+  .template-search__search {
+    max-width: 100%;
+  }
+  #main-search-filters {
+    margin-bottom: 24px;
+  }
+}
+
+@media screen and (min-width: 1249px) {
+  .header__search .search-modal__content {
+    padding: 0;
+  }
+}

@@ -1,0 +1,165 @@
+.faq-with-tab .container{
+  display: grid;
+  grid-template-columns: 1fr 2.1fr;
+  gap: 64px;
+  align-items: start;
+  position: relative;
+}
+.faq-with-tab.custom-faq .faq_categories {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
+  margin-bottom: 0;
+  flex-direction: column;
+  position: sticky;
+  .category{
+    cursor: pointer;
+    position: relative;
+    padding: 12px 8px;         
+    transition: all 0.1s ;
+   border-left: 2px solid var(--Primary-Color, #00000000);
+    
+  color: var(--Content-Base-main, #1F2937);
+  font-family: var(--font-family-Body, "Aktiv Grotesk");
+  font-size: var(--Font-Size-Paragraph-Regular, 16px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Line-Height-Paragraph-Regular, 24px); /* 150% */
+    @media(max-width: 768px){
+      min-width: max-content;
+      border: 2px solid #00000000 ;
+    }
+  }
+}
+.faq-with-tab.custom-faq .faq.active {
+      display: block;
+    }
+.faq-with-tab.custom-faq .faq {
+  display: none;
+  border-bottom: 1px solid #00000025;
+  .heading {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    align-items: center;
+    cursor: pointer;
+    svg{
+      fill: #000;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transition: all 0.4s ease-in-out;
+      transform: translateY(-50%);
+    }
+  }
+  h4.faq_title{
+    font-size: 32px;
+    margin: 16px 0;
+    color: var(--Content-Base-main, #1F2937);
+    font-family: var(--font-family-Title, "Aktiv Grotesk");
+    font-size: var(--Font-Size-Heading-H3, 20px);
+    font-style: normal;
+    font-weight: 400;
+    line-height: var(--Line-Height-Heading-H3, 20px); /* 100% */
+    letter-spacing: -0.4px;
+    /* @media(max-width: 1150px) {
+      font-size: 28px;
+      padding-right: 24px;
+    }
+    @media(max-width: 768px) {
+      font-size: 24px;
+      padding-right: 24px;
+    } */
+  }  
+}
+.faq-with-tab .faq_content {
+      height: 0px;
+      overflow: hidden;
+      transition: all 0.4s ease-in-out;
+      text-align: justify;
+      color: #000;
+      line-height: 180%;
+      font-size: 16px;
+      p, li{
+        color: var(--Content-Base-base, #4B5563);
+        font-family: var(--font-family-Body, "Aktiv Grotesk");
+        font-size: var(--Font-Size-Paragraph-Small, 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Small, 20px); /* 142.857% */
+        margin: 8px 0 16px;
+      }
+      a{
+        color: inherit;
+      }
+  }
+  .faq-with-tab .category.active{
+    color: var(--Content-Base-main, #1F2937) !important;
+    border-left: 2px solid var(--Content-Base-main, #1F2937) !important;
+  }
+  .faq-with-tab .category:hover:after{
+    /* width: 100%;
+    transition: all 0.4s ease-in; */
+  }
+  .faq-with-tab .heading span {
+    position: relative;
+  }
+  .faq-with-tab .category:after{
+      position: absolute;
+      content: "";
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 1px;
+      background: #0000005c; ;
+      /* background: #0000005c; */
+  }
+  .faq-with-tab .faq.active svg.minus{
+    visibility: hidden;
+  }
+  /* for js purpose.............................................. */
+  .faq-with-tab .faq.active.accordion__active-faq .heading p{
+    margin-bottom: 0;
+  }
+  .faq-with-tab .faq.active.accordion__active-faq #faq_content{
+      transition: all 0.2s ease-in-out;
+  }
+  .faq-with-tab .faq.active.accordion__active-faq svg.plus{
+      visibility: hidden;
+    /* transform: rotate(60deg); */
+    transition: all 0.2s ease-in-out;
+  }
+  .faq-with-tab .faq.active.accordion__active-faq svg.minus{
+    visibility: visible;
+    transition: all 0.2s ease-in-out;
+  }
+  /* for js purpose.............................................. */
+@media(max-width: 1050px) {
+  .faq-with-tab .container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      align-items: start;
+      position: relative;
+  }  
+  .faq-with-tab.custom-faq .faq_categories {
+      display: flex;
+      justify-content: start;
+      align-items: flex-start;
+      gap: 4px;
+      margin-bottom: 0;
+      overflow-x: scroll;
+      scrollbar-width: none;
+      flex-direction: row;
+      position: sticky;
+  } 
+  .faq-with-tab.custom-faq .faq_categories .category {
+      padding: 8px 12px;
+  }
+  .faq-with-tab .category.active {
+    /* border: 2px solid var(--Primary-Color, #E60000) !important;    */
+    border: 2px solid var(--Content-Base-main, #1F2937) !important;
+  }  
+  
+}

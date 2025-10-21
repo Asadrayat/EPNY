@@ -1,0 +1,113 @@
+{% comment %}
+    for render this collection card need to pass the following things -
+          block: block
+                            {% render 'mclbx-card',
+                      block: block
+                    %}
+                    {% assign button_label = block.settings.button_label %}
+  {% assign url = block.settings.url %}
+  {% assign title = block.settings.title %}
+  {% assign tagline = block.settings.tagline %}
+  {% assign content = block.settings.content %}
+  {% assign image = block.settings.image %}
+{% endcomment %}
+
+<style>
+    .article-card-wrapper-{{ block.id }}{
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--Spacing-Container-xs, 16px);
+  .media-wrapper {
+    position: relative;
+
+  }
+  .card-link{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  cursor: pointer;
+  display: block;
+  }
+
+  .collection-media-img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 4/5;
+    object-position: center;
+
+  }
+
+  .--top-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--Spacing-Container-xs, 12px);
+  }
+  .--tagline {
+  color: var(--Content-Base-main, #1F2937);
+  font-family: var(--font-family-Body, "Aktiv Grotesk");
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0.96px;
+  text-transform: uppercase;
+  }
+  .card-title{
+  margin: 0;
+  color: var(--Content-Base-main, #1F2937);
+  font-family: var(--font-family-Title, "Aktiv Grotesk");
+  font-size: var(--Font-Size-Heading-H3, 20px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: var(--Line-Height-Heading-H2, 24px);
+  letter-spacing: -0.72px;
+  @media(max-width: 768px){
+    font-size: var(--Font-Size-Heading-H3, 18px);
+    line-height: var(--Line-Height-Heading-H2, 22px);
+    letter-spacing: -0.32px;
+  }
+  }
+  .--content {
+  color: var(--Content-Base-main, #1F2937);
+  font-size: var(--Font-Size-Paragraph-Small, 14px);
+  line-height: var(--Line-Height-Paragraph-Small, 20px);
+    display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  }
+  a.button {
+  text-transform: uppercase;
+    /* justify-content: center; */
+    /* margin-block: var(--Spacing-Container-sm, 16px) 0; */
+  }
+    }
+</style>
+<div class="article-card-wrapper-{{ block.id }}">
+  <!-- <a href="{{ url }}" class="card-link"></a> -->
+
+  <div class="media-wrapper">
+    <a href="{{ article.url }}" class="card-link"></a>
+    {% if image != null %}
+      {{ image | image_url: width: image.width | image_tag: class: 'collection-media-img' }}
+
+    {% else %}
+      {{ 'image' | placeholder_svg_tag }}
+    {% endif %}
+  </div>
+  <div class="card-content-wrapper">
+    <div class="--top-block">
+      <div class="--tagline">{{ tagline }}</div>
+      <h2 class="card-title">{{ title }}</h2>
+      <div class="--content">{{ content }}</div>
+    </div>
+  </div>
+  {% if button_label != blank %}
+    <a class="button" href="{{ url }}">{{ button_label }}</a>
+  {% endif %}
+</div>

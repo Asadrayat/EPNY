@@ -1,0 +1,157 @@
+product-card {
+  position: relative;
+  height: 100%;
+  display: block;
+  .product-card {
+    height: 100%;
+    position: relative;
+    z-index: 2;
+    &.is--hoverable:hover {
+      .card-media {
+        .primary_image {
+          visibility: hidden;
+          opacity: 0;
+        }
+        .second_image {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+    }
+    .product-card-wrapper {
+      height: 100%;
+    }
+    > a {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: inline-block !important;
+    }
+  }
+
+  .card-media {
+    position: relative;
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 173/236;
+      object-fit: cover;
+    }
+
+    .primary_image {
+      visibility: visible;
+      opacity: 1;
+      transition: 0.3s all;
+    }
+
+    .second_image {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.3s all;
+    }
+  }
+
+  .card-info {
+    padding: 14px 12px;
+    .card-wishlist {
+      .ruk_rating_snippet {
+        color: #906f53;
+        i,
+        .ruk-rating-snippet-count {
+          font-size: 14px;
+          line-height: 18px;
+        }
+        i:before,
+        .ruk-rating-snippet-count {
+          color: #906f53 !important;
+        }
+      }
+    }
+
+    h4 {
+      color: var(--Content-Base-main);
+      font-family: var(--font-family-Body);
+      font-size: var(--Font-Size-Paragraph-Regular);
+      line-height: var(--Line-Height-Paragraph-Regular); /* 150% */
+      margin: 8px 0;
+    }
+    .card-price {
+      margin: 8px 0;
+      gap: 8px;
+      display: flex;
+      align-items: center;
+     .cnp-regular{
+        color: var(--Content-Base-main, #1F2937);
+        font-family: var(--font-family-Body, "Aktiv Grotesk");
+        font-size: var(--Font-Size-Paragraph-Small, 14px);
+        font-style: normal;
+        font-weight: 400;
+        line-height: var(--Line-Height-Paragraph-Small, 20px); /* 142.857% */
+       margin: 0;
+     }
+     .cnp-compare{
+       margin: 0;
+       color: var(--Content-Base-main, #1F2937);
+      font-family: var(--font-family-Body, "Aktiv Grotesk");
+      font-size: var(--Font-Size-Paragraph-Small, 14px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Paragraph-Small, 20px); /* 142.857% */
+     }
+    }
+  }
+  .card-qatc-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border: none;
+    width: 100%;
+    padding: 8px 12px;
+    font-size: 16px;
+    line-height: 20px;
+    color: #1f2937;
+    backdrop-filter: drop-shadow(2px 4px 6px black);
+    background: rgb(255 255 255 / 69%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    @media screen and (min-width: 1025px) {
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.3s all;
+    }
+  }
+  @media screen and (min-width: 1025px) {
+    .product-card:hover .card-qatc-btn {
+      visibility: visible;
+      opacity: 1;
+      backdrop-filter: drop-shadow(2px 4px 6px black);
+      background: rgb(255 255 255 / 69%);
+    }
+  }
+  .sale-badge {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 13px;
+    line-height: 16px;
+    padding: 4px 8px;
+    background: #906f53;
+  }
+}

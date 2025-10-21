@@ -1,0 +1,110 @@
+{% comment %}
+  for render this collection card need to pass the following things -
+        block: block
+                          {% render 'mclbx-card-style-2',
+                    block: block
+                  %}
+{% endcomment %}
+
+{% assign button_label = block.settings.button_label %}
+{% assign url = block.settings.url %}
+{% assign title = block.settings.title %}
+{% assign tagline = block.settings.tagline %}
+{% assign content = block.settings.content %}
+{% assign image = block.settings.image %}
+<style>
+  .card-wrapper-{{ block.id }}{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    color: #F3F4F6;
+    @media(max-width: 768px){
+      grid-template-columns:  minmax(0,1fr);
+    }
+.--card-image-wrapper {
+   @media(max-width: 768px){
+      display: none;
+    }
+}
+   
+.--text-column {
+   background: #906F53;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    padding: var(--Spacing-Container-xxl, 80px);
+}
+.--top-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--Spacing-Container-xxs, 8px);
+}
+    .--tagline {
+    /* color: var(--Content-Base-main, #1F2937); */
+    color: inherit;
+    font-family: var(--font-family-Body, "Aktiv Grotesk");
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.96px;
+    text-transform: uppercase;
+}
+    .card-title {
+      margin: 0;
+      /* color: var(--Content-Base-main, #1F2937); */
+      color: inherit;
+      font-family: var(--font-family-Title, "Aktiv Grotesk");
+      font-size: var(--Font-Size-Heading-H1, 24px);
+      font-style: normal;
+      font-weight: 400;
+      line-height: var(--Line-Height-Heading-H1, 24px);
+      letter-spacing: -0.72px;
+}
+.--content {
+      /* color: var(--Content-Base-main, #1F2937); */
+      color: inherit;
+      font-size: var(--Font-Size-Paragraph-Small, 14px);
+      line-height: var(--Line-Height-Paragraph-Small, 20px);
+}
+
+a.button {
+    color: inherit;
+    text-transform: uppercase;
+    justify-content: center;
+    margin-block: var(--Spacing-Container-sm, 16px) 0;
+}
+
+
+
+
+
+
+    
+  }
+</style>
+
+<div class="card-wrapper-{{ block.id }}">
+  <div class="--card-image-wrapper">
+    <a href="{{ url }}" class="card-link"></a>
+    {% if image != null %}
+      {{ image | image_url: width: image.width | image_tag: class: '--card-img' }}
+    {% else %}
+      {{ 'image' | placeholder_svg_tag }}
+    {% endif %}
+  </div>
+  <div class="--text-column">
+    <div class="card-content-wrapper">
+      <div class="--top-block">
+        <div class="--tagline">{{ tagline }}</div>
+        <h2 class="card-title">{{ title }}</h2>
+        <div class="--content">{{ content }}</div>
+      </div>
+
+      {% if button_label != blank %}
+        <a class="button" href="{{ url }}">{{ button_label }}</a>
+      {% endif %}
+    </div>
+  </div>
+</div>

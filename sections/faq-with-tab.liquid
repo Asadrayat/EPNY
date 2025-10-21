@@ -1,0 +1,272 @@
+{{ 'faq-with-tab.css' | asset_url | stylesheet_tag }}
+
+{% assign id = section.id %}
+<style>
+  #shopify-section-{{ id }} {
+   margin-top: {{ section.settings.margin_top }}px;
+   margin-bottom: {{ section.settings.margin_bottom }}px;
+   padding-top: {{ section.settings.padding_top }}px;
+   padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media screen and (max-width: 890px){
+     #shopify-section-{{ id }} {
+       margin-top: {{ section.settings.margin_top-m }}px;
+       margin-bottom: {{ section.settings.margin_bottom-m }}px;
+       padding-top: {{ section.settings.padding_top-m }}px;
+       padding-bottom: {{ section.settings.padding_bottom-m }}px;
+    }
+  }
+</style>
+
+{% liquid
+  for block in section.blocks
+    if block.type == 'category'
+      assign categoryHandle = block.settings.title | handle
+      capture categories
+        echo categories
+        echo '<div class="category" data-category="' | append: categoryHandle | append: '">'
+        echo block.settings.title
+        echo '</div>'
+      endcapture
+    endif
+    if block.type == 'faq'
+      assign faqCategoryHandle = block.settings.category | handle
+      capture faqs
+        echo faqs
+        echo '<div class="faq" data-category="' | append: faqCategoryHandle | append: '"><div class="heading" id="heading_faq"><span>'
+        echo '<svg class="plus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">'
+        echo '<path d="M12 6V12M12 12V18M12 12H18M12 12L6 12" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+        echo '</svg>'
+        echo '<svg class="minus" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">'
+        echo '<path d="M18 12H6" stroke="#4B5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+        echo '</svg>'
+        echo '</span><h4 class="faq_title">'
+        echo block.settings.title
+        echo '</h4>'
+        echo '</div><div class="faq_content" id= "faq_content">'
+        echo block.settings.content
+        echo '</div></div>'
+      endcapture
+    endif
+  endfor
+%}
+
+<section class="custom-faq faq-with-tab {% unless section.settings.full_width %}page-width{% endunless %}">
+  <div class="container">
+    <div class="faq_categories">
+      {{ categories }}
+    </div>
+    <div class="faq_container">
+      {{ faqs }}
+    </div>
+  </div>
+</section>
+
+<script>
+    // for tab content .....................................................
+  document.addEventListener("DOMContentLoaded", function() {
+    const categories = document.querySelectorAll('.category');
+    const faqs = document.querySelectorAll('.faq');
+
+    // Show the first category and its FAQs initially
+    categories[0].classList.add('active');
+    const initialCategory = categories[0].getAttribute('data-category');
+    faqs.forEach(faq => {
+      if (faq.getAttribute('data-category') === initialCategory) {
+        faq.classList.add('active');
+      }
+    });
+
+    categories.forEach(category => {
+      category.addEventListener('click', function() {
+        const selectedCategory = category.getAttribute('data-category');
+
+        // Hide all FAQs
+        faqs.forEach(faq => {
+          faq.classList.remove('active');
+          if (faq.getAttribute('data-category') === selectedCategory) {
+            faq.classList.add('active');
+          }
+        });
+
+        // Handle active state for categories
+        categories.forEach(c => {
+          c.classList.remove('active');
+        });
+        category.classList.add('active');
+      });
+    });
+  // for accordion................................................................
+      var accordionsFaq = document.querySelectorAll(".faq");
+      accordionsFaq.forEach(ac => console.log("height: ", ac.clientHeight))
+
+      var openAccordionFaq = (accordion) => {
+      	var content = accordion.querySelector("#faq_content");
+      	accordion.classList.add("accordion__active-faq");
+      	content.style.height = content.scrollHeight + 0 + "px";
+      };
+
+      var closeAccordionFaq = (accordion) => {
+      	var content = accordion.querySelector("#faq_content");
+      	accordion.classList.remove("accordion__active-faq");
+      	content.style.height = null;
+      };
+
+      accordionsFaq.forEach((accordion) => {
+      	var intro = accordion.querySelector("#heading_faq");
+      	var content = accordion.querySelector("#faq_content");
+
+      	intro.onclick = () => {
+      		if (content.style.height) {
+      			closeAccordionFaq(accordion);
+      		} else {
+      			accordionsFaq.forEach((accordion) => closeAccordionFaq(accordion));
+      			openAccordionFaq(accordion);
+      		}
+      	};
+      });
+    // if you want to open 1st accordion by default
+      if (accordionsFaq.length > 0) {
+        // openAccordionFaq(accordionsFaq[0]);
+      }
+
+   });
+</script>
+
+{% schema %}
+{
+  "name": "Faq With Tab",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full Width",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Spacing (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "margin_top-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Top (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Margin Bottom (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Top  (Mobile)",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom-m",
+      "min": 0,
+      "max": 200,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding Bottom  (Mobile)",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Name",
+        },
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "Faq",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Category block name"
+        }
+      ]
+    }
+  ],
+  "presets":[
+    {
+      "name": "Faq With Tab"
+    }
+  ]
+}
+{% endschema %}
